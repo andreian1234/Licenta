@@ -9,6 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Self{
-    public String href;
-    public String title;
+     String href;
+     String title;
 }

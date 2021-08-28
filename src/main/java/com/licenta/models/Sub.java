@@ -9,11 +9,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Sub{
-    public String label;
-    public String tag;
-    public String schemaOrgTag;
-    public double total;
-    public boolean hasRDI;
-    public double daily;
-    public String unit;
+     String label;
+     String tag;
+     String schemaOrgTag;
+     double total;
+     boolean hasRDI;
+     double daily;
+     String unit;
 }

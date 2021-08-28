@@ -10,10 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Root{
-    public int from;
-    public int to;
-    public int count;
-    public Links _links;
-    public List<Hit> hits;
+public class RootRecipe {
+     int from;
+     int to;
+     int count;
+     Links _links;
+     List<Hit> hits;
 }

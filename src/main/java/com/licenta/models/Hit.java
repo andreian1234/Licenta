@@ -9,6 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Hit{
-    public Recipe recipe;
-    public Links _links;
+     Recipe recipe;
+     Links _links;
 }

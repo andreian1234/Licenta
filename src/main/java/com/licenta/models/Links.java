@@ -9,6 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Links{
-    public Next next;
-    public Self self;
+     Next next;
+     Self self;
 }

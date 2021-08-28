@@ -10,23 +10,23 @@ import java.util.List;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Recipe{
-    public String uri;
-    public String label;
-    public String image;
-    public String source;
-    public String url;
-    public String shareAs;
-    public int yield;
-    public List<String> dietLabels;
-    public List<String> healthLabels;
-    public List<String> cautions;
-    public List<String> ingredientLines;
-    public List<Ingredient> ingredients;
-    public double calories;
-    public double totalWeight;
-    public int totalTime;
-    public List<String> cuisineType;
-    public List<String> mealType;
-    public List<String> dishType;
-    public List<Digest> digest;
+     String uri;
+     String label;
+     String image;
+     String source;
+     String url;
+     String shareAs;
+     int yield;
+     List<String> dietLabels;
+     List<String> healthLabels;
+     List<String> cautions;
+     List<String> ingredientLines;
+     List<Ingredient> ingredients;
+     double calories;
+     double totalWeight;
+     int totalTime;
+     List<String> cuisineType;
+     List<String> mealType;
+     List<String> dishType;
+     List<Digest> digest;
 }

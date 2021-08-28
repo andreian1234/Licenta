@@ -11,12 +11,12 @@ import java.util.List;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Digest{
-    public String label;
-    public String tag;
-    public String schemaOrgTag;
-    public double total;
-    public boolean hasRDI;
-    public double daily;
-    public String unit;
-    public List<Sub> sub;
+     String label;
+     String tag;
+     String schemaOrgTag;
+     double total;
+     boolean hasRDI;
+     double daily;
+     String unit;
+     List<Sub> sub;
 }
