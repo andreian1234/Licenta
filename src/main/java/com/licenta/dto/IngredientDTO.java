@@ -1,4 +1,4 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Next{
-    public String href;
-    public String title;
+public class IngredientDTO {
+     String text;
+     double weight;
+     String foodCategory;
+     String foodId;
+     String image;
 }

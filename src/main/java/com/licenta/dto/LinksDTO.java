@@ -1,4 +1,4 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Nutrient {
-    public String label;
-    public double quantity;
-    public String unit;
+public class LinksDTO {
+     NextDTO nextDTO;
+     SelfDTO selfDTO;
 }

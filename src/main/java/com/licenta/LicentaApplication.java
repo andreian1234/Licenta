@@ -1,6 +1,5 @@
 package com.licenta;
 
-import com.licenta.controllers.RecipeController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +11,5 @@ public class LicentaApplication {
 		SpringApplication.run(LicentaApplication.class, args);
 	}
 
-	RecipeController controller = new RecipeController();
 
 }

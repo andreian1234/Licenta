@@ -1,4 +1,4 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,10 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Root{
-    public int from;
-    public int to;
-    public int count;
-    public Links _links;
-    public List<Hit> hits;
+public class RootRecipeDTO {
+     int from;
+     int to;
+     int count;
+     LinksDTO _linksDTO;
+     List<HitDTO> hitDTOS;
 }
