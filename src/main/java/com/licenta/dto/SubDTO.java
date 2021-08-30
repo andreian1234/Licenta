@@ -1,16 +1,14 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Digest{
+public class SubDTO {
      String label;
      String tag;
      String schemaOrgTag;
@@ -18,5 +16,4 @@ public class Digest{
      boolean hasRDI;
      double daily;
      String unit;
-     List<Sub> sub;
 }

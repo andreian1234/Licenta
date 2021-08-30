@@ -1,4 +1,4 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Next{
-     String href;
-     String title;
+public class LinksDTO {
+     NextDTO nextDTO;
+     SelfDTO selfDTO;
 }

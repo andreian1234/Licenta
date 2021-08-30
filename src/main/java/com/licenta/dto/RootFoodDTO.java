@@ -1,4 +1,4 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Hint {
-     Food food;
-     List<Measure> measure;
+public class RootFoodDTO {
+
+     String text;
+     List<HintDTO> hintDTOS;
+     LinksDTO linksDTO;
 }

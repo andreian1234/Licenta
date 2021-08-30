@@ -1,4 +1,4 @@
-package com.licenta.models;
+package com.licenta.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -6,27 +6,23 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Recipe{
-     String uri;
+public class RecipeDTO {
      String label;
      String image;
-     String source;
      String url;
-     String shareAs;
      int yield;
      List<String> dietLabels;
      List<String> healthLabels;
      List<String> cautions;
      List<String> ingredientLines;
-     List<Ingredient> ingredients;
+     List<IngredientDTO> ingredientDTOS;
      double calories;
      double totalWeight;
-     int totalTime;
      List<String> cuisineType;
      List<String> mealType;
      List<String> dishType;
-     List<Digest> digest;
+     List<DigestDTO> digestDTO;
+     String self;
 }

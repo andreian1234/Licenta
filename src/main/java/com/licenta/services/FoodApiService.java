@@ -3,7 +3,7 @@ package com.licenta.services;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.licenta.models.*;
+import com.licenta.dto.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class FoodApiService {
 
-    private static RootFood getFoodRootDetailsObject(JsonObject jsonObject) throws Exception {
-        RootFood rootFoodObj;
-        Links linksObj;
-        Next nextObj;
-        Self selfObj;
+    private static RootFoodDTO getFoodRootDetailsObject(JsonObject jsonObject) throws Exception {
+        RootFoodDTO rootFoodDTOObj;
+        LinksDTO linksDTOObj;
+        NextDTO nextDTOObj;
+        SelfDTO selfDTOObj;
 
         String label1 = "label";
 
@@ -35,101 +35,74 @@ public class FoodApiService {
         var href = (JsonPrimitive) nextJsonObj.get("href");
         var title = (JsonPrimitive) nextJsonObj.get("title");
 
-        nextObj = new Next(href.getAsString(), title.getAsString());
+        nextDTOObj = new NextDTO(href.getAsString(), title.getAsString());
 
-        selfObj = new Self("", "");
+        selfDTOObj = new SelfDTO("", "");
 
-        linksObj = new Links(nextObj, selfObj);
+        linksDTOObj = new LinksDTO(nextDTOObj, selfDTOObj);
 
         //Get food array and put it in the root object//
 
         JsonArray hintsJsonArray = (JsonArray) response.get("hints");
-        List<Hint> hintListObj = new ArrayList<>();
+        List<HintDTO> hintDTOListObj = new ArrayList<>();
         for (int i = 0; i < hintsJsonArray.size(); i++) {
-            Hint hintObj;
-            Food foodObj = new Food();
+            HintDTO hintDTOObj;
+            FoodDTO foodDTOObj = new FoodDTO();
 
             //Get food primitives
 
             JsonObject foodJson = (JsonObject) ((JsonObject) hintsJsonArray.get(i)).get("food");
 
             var foodId = (JsonPrimitive) foodJson.get("foodId");
-            foodObj.setFoodId(foodId.getAsString());
+            foodDTOObj.setFoodId(foodId.getAsString());
             var label = (JsonPrimitive) foodJson.get(label1);
-            foodObj.setLabel(label.getAsString());
+            foodDTOObj.setLabel(label.getAsString());
             var category = (JsonPrimitive) foodJson.get("category");
-            foodObj.setCategory(category.getAsString());
+            foodDTOObj.setCategory(category.getAsString());
 
 
-            foodObj.setImage(!foodJson.has("image") ? "" : ((JsonPrimitive) foodJson.get("image")).getAsString());
+            foodDTOObj.setImage(!foodJson.has("image") ? "" : ((JsonPrimitive) foodJson.get("image")).getAsString());
 
-            foodObj.setServingsPerContainer(!foodJson.has("servingsPerContainer") ? 0 : ((JsonPrimitive) foodJson.get("servingsPerContainer")).getAsDouble());
+            foodDTOObj.setFoodContentsLabel(!foodJson.has("setFoodContentsLabel") ? "" : ((JsonPrimitive) foodJson.get("setFoodContentsLabel")).getAsString());
 
-            foodObj.setFoodContentsLabel(!foodJson.has("setFoodContentsLabel") ? "" : ((JsonPrimitive) foodJson.get("setFoodContentsLabel")).getAsString());
-
-            foodObj.setCategoryLabel(!foodJson.has("categoryLabel") ? "" : ((JsonPrimitive) foodJson.get("categoryLabel")).getAsString());
+            foodDTOObj.setCategoryLabel(!foodJson.has("categoryLabel") ? "" : ((JsonPrimitive) foodJson.get("categoryLabel")).getAsString());
 
 
             //Get nutrients Obj
-            Nutrients nutrientsObj;
+            NutrientsDTO nutrientsDTOObj;
             JsonObject nutrientsJson = (JsonObject) foodJson.get("nutrients");
             var enercKcal = (JsonPrimitive) nutrientsJson.get("ENERC_KCAL");
             var procnt = (JsonPrimitive) nutrientsJson.get("PROCNT");
             var fat = (JsonPrimitive) nutrientsJson.get("FAT");
             var chocdf = (JsonPrimitive) nutrientsJson.get("CHOCDF");
             var fibtg = (JsonPrimitive) nutrientsJson.get("FIBTG");
-            nutrientsObj = new Nutrients(enercKcal.getAsDouble(), procnt.getAsDouble(), fat.getAsDouble(), chocdf.getAsDouble(), fibtg.getAsDouble());
+            nutrientsDTOObj = new NutrientsDTO(enercKcal.getAsDouble(), procnt.getAsDouble(), fat.getAsDouble(), chocdf.getAsDouble(), fibtg.getAsDouble());
 
-            foodObj.setNutrients(nutrientsObj);
-
-            //Get servingSizes ObjArray
-            if (((JsonObject) hintsJsonArray.get(i)).has("servingSizes")) {
-                JsonArray servingSizesJsonArray = (JsonArray) foodJson.get("servingSizes");
-                List<ServingSize> servingSizeListObj = new ArrayList<>();
-                for (int j = 0; j < servingSizesJsonArray.size(); j++) {
-                    ServingSize servingSizeObj = new ServingSize();
-
-                    servingSizeObj.setLabel(((JsonObject) servingSizesJsonArray.get(j)).get(label1).isJsonNull() ? "" : ((JsonObject) servingSizesJsonArray.get(j)).get(label1).getAsString());
-
-                    if (((JsonObject) servingSizesJsonArray.get(j)).get("quantity").isJsonNull()) {
-                        servingSizeObj.setQuantity(0);
-                    } else
-                        servingSizeObj.setQuantity(((JsonObject) servingSizesJsonArray.get(j)).get("quantity").getAsDouble());
-
-                    servingSizeListObj.add(servingSizeObj);
-
-                }
-                foodObj.setServingSizes(servingSizeListObj);
-            } else {
-                List<ServingSize> servingSizeListObj = new ArrayList<>();
-                foodObj.setServingSizes(servingSizeListObj);
-            }
-
+            foodDTOObj.setNutrientsDTO(nutrientsDTOObj);
 
             //Get measueres ObjArray
 
             JsonArray measuresJsonArray = (JsonArray) ((JsonObject) hintsJsonArray.get(i)).get("measures");
-            List<Measure> measuresListObj = new ArrayList<>();
+            MeasureDTO measuresObj = new MeasureDTO();
             for (int j = 0; j < measuresJsonArray.size(); j++) {
-                Measure measureObj = new Measure();
+                MeasureDTO measureDTOObj = new MeasureDTO();
 
-                if (!((JsonObject) measuresJsonArray.get(j)).has(label1)) {
-                    measureObj.setLabel("");
-                } else measureObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get(label1).getAsString());
+                if(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Serving"))
+                {
+                    measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
+                    measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
 
-                if (!((JsonObject) measuresJsonArray.get(j)).has("weight")) {
-                    measureObj.setWeight(0);
-                } else measureObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
-
-                measuresListObj.add(measureObj);
+                }
 
             }
 
 
-            hintObj = new Hint(foodObj, measuresListObj);
-            hintListObj.add(hintObj);
+            hintDTOObj = new HintDTO(foodDTOObj, measuresObj);
+            foodDTOObj.setMeasureDTO(measuresObj);
+            hintDTOListObj.add(hintDTOObj);
         }
-        rootFoodObj = new RootFood(text.getAsString(), hintListObj, linksObj);
-        return rootFoodObj;
+        rootFoodDTOObj = new RootFoodDTO(text.getAsString(), hintDTOListObj, linksDTOObj);
+        return rootFoodDTOObj;
     }
+
 }

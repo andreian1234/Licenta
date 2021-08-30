@@ -1,7 +1,6 @@
 package com.licenta.controllers;
 
-import com.google.gson.JsonObject;
-import com.licenta.models.RootRecipe;
+import com.licenta.dto.RootRecipeDTO;
 import com.licenta.services.RecipeApiService;
 import com.licenta.services.URLService;
 import lombok.SneakyThrows;
@@ -21,12 +20,12 @@ public class RecipeController {
     }
 
     @SneakyThrows
-    @GetMapping(path = "recipes/{ingredient}")
+    @GetMapping(path = "/{ingredient}")
     public void show(@PathVariable String ingredient)
     {
         String url = urlService.getRecipeUrl(ingredient);
-        RootRecipe rootRecipe = recipeApiService.getRootRecipeDetailsObject(urlService.getApi(url));
-        System.out.println(rootRecipe.getTo());
+        RootRecipeDTO rootRecipeDTO = recipeApiService.getRootRecipeDetailsObject(urlService.getApi(url));
+        System.out.println(rootRecipeDTO.getTo());
 
     }
 }
