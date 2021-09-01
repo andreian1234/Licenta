@@ -21,7 +21,6 @@ public class FoodEatenDTO {
     private UUID userId;
     private FoodDTO food;
     private Date date;
-    private MeasureDTO measureDTO;
     private double quantity;
 
     @Override
@@ -35,8 +34,7 @@ public class FoodEatenDTO {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (food != null ? !food.equals(that.food) : that.food != null) return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        return measureDTO != null ? measureDTO.equals(that.measureDTO) : that.measureDTO == null;
+        return date != null ? date.equals(that.date) : that.date == null;
     }
 
     @Override
@@ -47,7 +45,6 @@ public class FoodEatenDTO {
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (food != null ? food.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (measureDTO != null ? measureDTO.hashCode() : 0);
         temp = Double.doubleToLongBits(quantity);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;

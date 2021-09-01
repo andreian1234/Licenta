@@ -2,24 +2,19 @@ package com.licenta.services;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import org.springframework.stereotype.Service;
-
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-@Service
-@AllArgsConstructor
+@UtilityClass
 public class URLService {
 
-    @SneakyThrows
-    public static JsonObject getApi(String urlToRead)  {
+
+    public static JsonObject getApi(String urlToRead) throws IOException {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
