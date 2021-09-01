@@ -2,19 +2,26 @@ package com.licenta.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
 
 public class NutrientsDTO {
 
-    double ENERC_KCAL;
-    double PROCNT;
-    double FAT;
-    double CHOCDF;
-    double FIBTG;
+    double enercKcal;
+    double protein;
+    double fat;
+    double carbs;
+    double fiber;
 
-    public NutrientsDTO(double asDouble, double asDouble1, double asDouble2, double asDouble3, double asDouble4) {
+    public NutrientsDTO(double enercKcal, double protein, double fat, double carbs, double fiber) {
+        this.enercKcal = enercKcal;
+        this.protein = protein;
+        this.fat = fat;
+        this.carbs = carbs;
+        this.fiber = fiber;
     }
 }
