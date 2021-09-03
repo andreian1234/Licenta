@@ -63,8 +63,6 @@ public class FoodApiService {
 
             foodDTOObj.setImage(!foodJson.has("image") ? "" : ((JsonPrimitive) foodJson.get("image")).getAsString());
 
-            foodDTOObj.setFoodContentsLabel(!foodJson.has("setFoodContentsLabel") ? "" : ((JsonPrimitive) foodJson.get("setFoodContentsLabel")).getAsString());
-
             foodDTOObj.setCategoryLabel(!foodJson.has("categoryLabel") ? "" : ((JsonPrimitive) foodJson.get("categoryLabel")).getAsString());
 
 

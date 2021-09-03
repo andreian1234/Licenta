@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Date;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -16,9 +15,9 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FoodEatenDTO {
 
-    private UUID id;
+    private long id;
     @JsonIgnore
-    private UUID userId;
+    private long userId;
     private FoodDTO food;
     private Date date;
     private double quantity;
@@ -30,9 +29,9 @@ public class FoodEatenDTO {
 
         FoodEatenDTO that = (FoodEatenDTO) o;
 
+        if (id != that.id) return false;
+        if (userId != that.userId) return false;
         if (Double.compare(that.quantity, quantity) != 0) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (food != null ? !food.equals(that.food) : that.food != null) return false;
         return date != null ? date.equals(that.date) : that.date == null;
     }
@@ -41,8 +40,8 @@ public class FoodEatenDTO {
     public int hashCode() {
         int result;
         long temp;
-        result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + (food != null ? food.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         temp = Double.doubleToLongBits(quantity);

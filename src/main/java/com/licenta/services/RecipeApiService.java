@@ -233,8 +233,8 @@ public class RecipeApiService {
 
             }
             recipeDTOObj = new RecipeDTO(label.getAsString(), image.getAsString(), url.getAsString(),
-                    yield1.getAsInt(), dietLabelsListObj, healthLabelsListObj, cautionsLabelsListObj, ingredientLinesListObj, ingredientDTOListObj, calories.getAsDouble(),
-                    totalWeight.getAsDouble(), cuisineTypeLabelsListObj, mealTypeListObj, dishTypeListObj, digestDTOListObj, href1.getAsString());
+                    yield1.getAsInt(), calories.getAsDouble(), totalWeight.getAsDouble(), cuisineTypeLabelsListObj, mealTypeListObj, dishTypeListObj, dietLabelsListObj, healthLabelsListObj, cautionsLabelsListObj, ingredientLinesListObj, ingredientDTOListObj,
+                    digestDTOListObj, href1.getAsString());
 
             hitDTOObj = new HitDTO(recipeDTOObj, linksDTO1Obj);
             hitDTOListObj.add(hitDTOObj);

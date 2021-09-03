@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +18,8 @@ public final class FoodEaten {
 
     @Id
     @Column(name = "id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -38,24 +37,24 @@ public final class FoodEaten {
 
 
     public FoodEaten(
-            final UUID id,
+            final long id,
             final User user,
             final Food food,
             final Date date,
             final double quantity
     ) {
-        this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
+        this.id = id;
         this.user = user;
         this.food = food;
         this.date = (Date) date.clone();
         this.quantity = quantity;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 
