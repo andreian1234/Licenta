@@ -37,15 +37,15 @@ public class Food {
     @Embedded
     private Measure measure;
 
-    public Food(final long id,
-                final String label,
-                final Nutrients nutrients,
-                final String category,
-                final String categoryLabel,
-                final String image,
-                final Measure measure
+    public Food(
+            final String label,
+            final Nutrients nutrients,
+            final String category,
+            final String categoryLabel,
+            final String image,
+            final Measure measure
     ) {
-        this.id = id;
+
         this.nutrients = nutrients;
         this.category = category;
         this.categoryLabel = categoryLabel;

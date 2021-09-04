@@ -34,7 +34,7 @@ public final class Weight {
     public Weight(
             final long id,
             final User user,
-            final Date date,
+            final java.util.Date date,
             final double pounds
     ) {
         this.id = id;

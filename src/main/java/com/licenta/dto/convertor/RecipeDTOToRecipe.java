@@ -29,14 +29,13 @@ public final class RecipeDTOToRecipe implements Converter<RecipeDTO, Recipe> {
         Recipe recipe = null;
         if (recipeDTO != null)
             recipe = new Recipe(
-                    Long.parseLong("1"),
                     recipeDTO.getLabel(),
                     recipeDTO.getImage(),
                     recipeDTO.getUrl(),
                     recipeDTO.getYield(),
                     recipeDTO.getCalories(),
                     recipeDTO.getTotalWeight(),
-                    recipeDTO.getSelf(),
+                    recipeDTO.getLink(),
                     recipeDTO.getDietLabels(),
                     recipeDTO.getHealthLabels(),
                     recipeDTO.getCautions(),

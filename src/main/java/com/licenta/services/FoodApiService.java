@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FoodApiService {
 
-    private static RootFoodDTO getFoodRootDetailsObject(JsonObject jsonObject) throws Exception {
+    public static RootFoodDTO getFoodRootDetailsObject(JsonObject jsonObject) throws Exception {
         RootFoodDTO rootFoodDTOObj;
         LinksDTO linksDTOObj;
         NextDTO nextDTOObj;
@@ -67,14 +67,14 @@ public class FoodApiService {
 
 
             //Get nutrients Obj
-            NutrientsDTO nutrientsDTOObj;
+            NutrientsDTO nutrientsDTOObj = new NutrientsDTO();
             JsonObject nutrientsJson = (JsonObject) foodJson.get("nutrients");
-            var enercKcal = (JsonPrimitive) nutrientsJson.get("ENERC_KCAL");
-            var procnt = (JsonPrimitive) nutrientsJson.get("PROCNT");
-            var fat = (JsonPrimitive) nutrientsJson.get("FAT");
-            var chocdf = (JsonPrimitive) nutrientsJson.get("CHOCDF");
-            var fibtg = (JsonPrimitive) nutrientsJson.get("FIBTG");
-            nutrientsDTOObj = new NutrientsDTO(enercKcal.getAsDouble(), procnt.getAsDouble(), fat.getAsDouble(), chocdf.getAsDouble(), fibtg.getAsDouble());
+            nutrientsDTOObj.setEnercKcal(!nutrientsJson.has("ENERC_KCAL") ? 0 : ((JsonPrimitive) nutrientsJson.get("ENERC_KCAL")).getAsDouble());
+            nutrientsDTOObj.setProtein(!nutrientsJson.has("PROCNT") ? 0 : ((JsonPrimitive) nutrientsJson.get("PROCNT")).getAsDouble());
+            nutrientsDTOObj.setFat(!nutrientsJson.has("FAT") ? 0 : ((JsonPrimitive) nutrientsJson.get("FAT")).getAsDouble());
+            nutrientsDTOObj.setCarbs(!nutrientsJson.has("CHOCDF") ? 0 : ((JsonPrimitive) nutrientsJson.get("CHOCDF")).getAsDouble());
+            nutrientsDTOObj.setFiber(!nutrientsJson.has("FIBTG") ? 0 : ((JsonPrimitive) nutrientsJson.get("FIBTG")).getAsDouble());
+
 
             foodDTOObj.setNutrientsDTO(nutrientsDTOObj);
 

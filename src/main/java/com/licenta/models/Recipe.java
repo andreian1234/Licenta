@@ -35,7 +35,7 @@ public final class Recipe {
     private String url;
 
     @Column(name = "yield")
-    private double yield;
+    private int yield;
 
     @Column(name = "calories")
     private double calories;
@@ -74,11 +74,10 @@ public final class Recipe {
     private List<Digest> digestList = new ArrayList<>();
 
     public Recipe(
-            long id,
             String label,
             String image,
             String url,
-            double yield,
+            int yield,
             double calories,
             double totalWeight,
             String self,
@@ -91,7 +90,6 @@ public final class Recipe {
             List<String> dishTypeList,
             List<Ingredient> ingredientList,
             List<Digest> digestList) {
-        this.id = id;
         this.label = label;
         this.image = image;
         this.url = url;
