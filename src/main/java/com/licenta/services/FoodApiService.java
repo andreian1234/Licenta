@@ -84,23 +84,25 @@ public class FoodApiService {
             MeasureDTO measuresObj = new MeasureDTO();
             for (int j = 0; j < measuresJsonArray.size(); j++) {
                 MeasureDTO measureDTOObj = new MeasureDTO();
-
-                if(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Serving"))
-                {
-                    measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
-                    measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
-
+                if (((JsonObject) measuresJsonArray.get(j)).has("label")) {
+                    if (((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Serving")) {
+                        measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
+                        measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
+                    }
+                } else {
+                    measureDTOObj.setLabel("");
+                    measureDTOObj.setWeight(0);
                 }
 
+
             }
-
-
             hintDTOObj = new HintDTO(foodDTOObj, measuresObj);
             foodDTOObj.setMeasureDTO(measuresObj);
             hintDTOListObj.add(hintDTOObj);
         }
+
         rootFoodDTOObj = new RootFoodDTO(text.getAsString(), hintDTOListObj, linksDTOObj);
         return rootFoodDTOObj;
-    }
 
+    }
 }

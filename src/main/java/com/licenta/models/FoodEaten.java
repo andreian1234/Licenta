@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +21,10 @@ public final class FoodEaten {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
+    @Column(name = "identificaton")
+    private String foodId;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -30,7 +34,7 @@ public final class FoodEaten {
     private Food food;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "quantity", nullable = false)
     private Double quantity;
@@ -38,15 +42,17 @@ public final class FoodEaten {
 
     public FoodEaten(
             final long id,
+            final String foodId,
             final User user,
             final Food food,
-            final Date date,
+            final LocalDate date,
             final double quantity
     ) {
         this.id = id;
+        this.foodId = foodId;
         this.user = user;
         this.food = food;
-        this.date = (Date) date.clone();
+        this.date = date;
         this.quantity = quantity;
     }
 
@@ -62,6 +68,14 @@ public final class FoodEaten {
         return user;
     }
 
+    public String getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(String foodId) {
+        this.foodId = foodId;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -74,11 +88,11 @@ public final class FoodEaten {
         this.food = food;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -19,6 +19,9 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "foodId")
+    private String foodId;
+
     @Embedded
     private Nutrients nutrients;
 
@@ -38,6 +41,7 @@ public class Food {
     private Measure measure;
 
     public Food(
+            final String foodId,
             final String label,
             final Nutrients nutrients,
             final String category,
@@ -45,13 +49,21 @@ public class Food {
             final String image,
             final Measure measure
     ) {
-
+        this.foodId = foodId;
         this.nutrients = nutrients;
         this.category = category;
         this.categoryLabel = categoryLabel;
         this.image = image;
         this.label = label;
         this.measure = measure;
+    }
+
+    public String getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(String foodId) {
+        this.foodId = foodId;
     }
 
     public long getId() {

@@ -38,6 +38,13 @@ public final class UserService {
     }
 
 
+    public User findUserByEmail(final String email) {
+        if (email == null) {
+            return null;
+        }
+        return userRepository.findByEmailEquals(email);
+    }
+
     public UserDTO findByEmail(final String email) {
         if (email == null) {
             return null;

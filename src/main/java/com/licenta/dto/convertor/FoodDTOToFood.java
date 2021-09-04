@@ -23,6 +23,7 @@ public final class FoodDTOToFood implements Converter<FoodDTO, Food> {
         Measure measure = null;
         if (foodDTO != null) {
             food = new Food(
+                    foodDTO.getFoodId(),
                     foodDTO.getLabel(),
                     nutrientsDTOToNutrients.convert(foodDTO.getNutrientsDTO()),
                     foodDTO.getCategory(),

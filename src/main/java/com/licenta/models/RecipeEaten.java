@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
@@ -32,7 +32,7 @@ public class RecipeEaten {
     private Recipe recipe;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "quantity", nullable = false)
     private double quantity;
@@ -41,7 +41,7 @@ public class RecipeEaten {
             long id,
             User user,
             Recipe recipe,
-            Date date,
+            LocalDate date,
             double quantity
     ) {
         this.id = id;

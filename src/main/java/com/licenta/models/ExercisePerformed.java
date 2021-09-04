@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class ExercisePerformed {
     private Exercise exercise;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "minutes", nullable = false)
     private Integer minutes;
@@ -41,13 +41,13 @@ public class ExercisePerformed {
             final UUID id,
             final User user,
             final Exercise exercise,
-            final Date date,
+            final LocalDate date,
             final int minutes
     ) {
         this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
         this.user = user;
         this.exercise = exercise;
-        this.date = (Date) date.clone();
+        this.date = date;
         this.minutes = minutes;
     }
 

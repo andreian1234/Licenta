@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -19,7 +19,7 @@ public class ExercisePerformedDTO implements Serializable {
     @JsonIgnore
     private UUID userId;
     private ExerciseDTO exercise;
-    private Date date;
+    private LocalDate date;
     private int minutes;
     private int caloriesBurned;
     private double pointsBurned;

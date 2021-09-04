@@ -3,7 +3,7 @@ package com.licenta.models;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +18,7 @@ public class User {
     @Column(name = "GENDER", length = 6, nullable = false)
     private String gender;
     @Column(name = "BIRTHDATE", nullable = false)
-    private Date birthdate;
+    private LocalDate birthdate;
     @Column(name = "HEIGHT_IN_CENTIMITERS", nullable = false)
     private double heightInCm;
     @Column(name = "ACTIVITY_LEVEL", nullable = false)
@@ -44,7 +44,7 @@ public class User {
     public User(
             final long id,
             final Gender gender,
-            final Date birthdate,
+            final LocalDate birthdate,
             final double heightInCm,
             final ActivityLevel activityLevel,
             final String email,
@@ -54,7 +54,7 @@ public class User {
     ) {
         this.id = id;
         this.gender = gender.toString();
-        this.birthdate = (Date) birthdate.clone();
+        this.birthdate = birthdate;
         this.heightInCm = heightInCm;
         this.activityLevel = activityLevel.getValue();
         this.email = email;
@@ -71,12 +71,12 @@ public class User {
         this.id = id;
     }
 
-    public Date getBirthdate() {
-        return (Date) birthdate.clone();
+    public LocalDate getBirthdate() {
+        return this.birthdate;
     }
 
-    public void setBirthdate(final Date birthdate) {
-        this.birthdate = (Date) birthdate.clone();
+    public void setBirthdate(final LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public double getHeightInCm() {

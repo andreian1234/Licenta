@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +18,9 @@ public class FoodEatenDTO {
     private long id;
     @JsonIgnore
     private long userId;
+    private String foodId;
     private FoodDTO food;
-    private Date date;
+    private LocalDate date;
     private double quantity;
 
     @Override

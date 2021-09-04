@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public class UserDTO implements Serializable {
     @JsonIgnore
     private long id;
     private User.Gender gender;
-    private Date birthdate;
+    private LocalDate birthdate;
     private double heightInCm;
     private User.ActivityLevel activityLevel;
     private String email;
@@ -27,6 +27,19 @@ public class UserDTO implements Serializable {
     private double bmi;
     private int maintenanceCalories;
 
+
+    public UserDTO(User.Gender gender, LocalDate birthdate, double heightInCm, User.ActivityLevel activityLevel, String email, String firstName, String lastName, double currentWeight, double bmi, int maintenanceCalories) {
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.heightInCm = heightInCm;
+        this.activityLevel = activityLevel;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.currentWeight = currentWeight;
+        this.bmi = bmi;
+        this.maintenanceCalories = maintenanceCalories;
+    }
 
     @Override
     public boolean equals(Object o) {
