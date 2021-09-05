@@ -77,24 +77,32 @@ public class FoodApiService {
 
 
             foodDTOObj.setNutrientsDTO(nutrientsDTOObj);
+            MeasureDTO measuresObj = new MeasureDTO();
 
             //Get measueres ObjArray
-
-            JsonArray measuresJsonArray = (JsonArray) ((JsonObject) hintsJsonArray.get(i)).get("measures");
-            MeasureDTO measuresObj = new MeasureDTO();
-            for (int j = 0; j < measuresJsonArray.size(); j++) {
-                MeasureDTO measureDTOObj = new MeasureDTO();
-                if (((JsonObject) measuresJsonArray.get(j)).has("label")) {
-                    if (((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Serving")) {
-                        measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
-                        measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
-                    }
-                } else {
-                    measureDTOObj.setLabel("");
-                    measureDTOObj.setWeight(0);
+            if (foodJson.has("servingSizes")) {
+                JsonArray serrvingSizes = (JsonArray) foodJson.get("servingSizes");
+                for (int j = 0; j < serrvingSizes.size(); j++) {
+                    if (((JsonObject) serrvingSizes.get(j)).has("label"))
+                        if ((((JsonObject) serrvingSizes.get(j)).get("label").getAsString().equals("Gram")) ||
+                                (((JsonObject) serrvingSizes.get(j)).get("label").getAsString().equals("Milliliter"))) {
+                            measuresObj.setLabel(((JsonObject) serrvingSizes.get(j)).get("label").getAsString());
+                            measuresObj.setWeight(((JsonObject) serrvingSizes.get(j)).get("quantity").getAsDouble());
+                        }
                 }
-
-
+            } else {
+                JsonArray measuresJsonArray = (JsonArray) ((JsonObject) hintsJsonArray.get(i)).get("measures");
+                for (int j = 0; j < measuresJsonArray.size(); j++) {
+                    if (((JsonObject) measuresJsonArray.get(j)).has("label")) {
+                        if (((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Whole")) {
+                            measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
+                            measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
+                        }
+                    } else {
+                        measuresObj.setLabel("");
+                        measuresObj.setWeight(0);
+                    }
+                }
             }
             hintDTOObj = new HintDTO(foodDTOObj, measuresObj);
             foodDTOObj.setMeasureDTO(measuresObj);

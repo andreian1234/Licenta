@@ -1,14 +1,18 @@
 package com.licenta.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Getter
+@Setter
 @Entity
 @Table(
         name = "food_eaten",
@@ -16,17 +20,16 @@ import java.time.LocalDate;
 )
 public final class FoodEaten {
 
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
-    @Column(name = "identificaton")
-    private String foodId;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
@@ -40,69 +43,25 @@ public final class FoodEaten {
     private Double quantity;
 
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
     public FoodEaten(
             final long id,
-            final String foodId,
             final User user,
             final Food food,
             final LocalDate date,
             final double quantity
     ) {
         this.id = id;
-        this.foodId = foodId;
         this.user = user;
         this.food = food;
         this.date = date;
         this.quantity = quantity;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(String foodId) {
-        this.foodId = foodId;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Food getFood() {
-        return food;
-    }
-
-    public void setFood(Food food) {
-        this.food = food;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
 
     public double getEnercKcal() {
         return food.getNutrients().getEnercKcal() * getRatio();

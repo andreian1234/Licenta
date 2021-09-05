@@ -1,5 +1,6 @@
 package com.licenta.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Set;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
     @Column(name = "GENDER", length = 6, nullable = false)
@@ -31,36 +33,147 @@ public class User {
     private String firstName;
     @Column(name = "LAST_NAME", length = 20, nullable = false)
     private String lastName;
-    @OneToMany(mappedBy = "user")
-    private Set<Weight> weights = new HashSet<>();
-    @OneToMany(mappedBy = "user")
+    @Column(name = "MAINTENANANCE_CALORIES")
+    private double maintenanceCalories;
+    @Column(name = "WEIGHT")
+    private double weight;
+    @Column(name = "DESIRED_WEIGHT")
+    private double desiredWeight;
+    @Column(name = "CREATED_AT")
+    private LocalDate createdAt;
+    @Column(name = "DIET")
+    private String diet;
+    @Column(name = "FAT")
+    private double fat;
+    @Column(name = "CARBS")
+    private double carbs;
+    @Column(name = "PROTEIN")
+    private double protein;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
     private Set<FoodEaten> foodsEaten = new HashSet<>();
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<RecipeEaten> recipesEaten = new HashSet<>();
     @OneToMany(mappedBy = "user")
     private Set<ExercisePerformed> exercisesPerformed = new HashSet<>();
 
-
     public User(
             final long id,
-            final Gender gender,
+            final String gender,
             final LocalDate birthdate,
             final double heightInCm,
             final ActivityLevel activityLevel,
             final String email,
-            final String passwordHash,
             final String firstName,
-            final String lastName
+            final String lastName,
+            final double maintenanceCalories,
+            final double weight,
+            final double desiredWeight,
+            final LocalDate createdAt,
+            final String diet,
+            final double fat,
+            final double carbs,
+            final double protein,
+            final String password
     ) {
         this.id = id;
-        this.gender = gender.toString();
+        this.gender = gender;
         this.birthdate = birthdate;
         this.heightInCm = heightInCm;
         this.activityLevel = activityLevel.getValue();
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.passwordHash = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.maintenanceCalories = maintenanceCalories;
+        this.weight = weight;
+        this.desiredWeight = desiredWeight;
+        this.createdAt = createdAt;
+        this.diet = diet;
+        this.fat = fat;
+        this.carbs = carbs;
+        this.protein = protein;
+    }
+
+    public String getDiet() {
+        return diet;
+    }
+
+    public void setDiet(String diet) {
+        this.diet = diet;
+    }
+
+    public double getFat() {
+        return fat;
+    }
+
+    public void setFat(double fat) {
+        this.fat = fat;
+    }
+
+    public double getCarbs() {
+        return carbs;
+    }
+
+    public void setCarbs(double carbs) {
+        this.carbs = carbs;
+    }
+
+    public double getProtein() {
+        return protein;
+    }
+
+    public void setProtein(long protein) {
+        this.protein = protein;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public double getDesiredWeight() {
+        return desiredWeight;
+    }
+
+    public void setDesiredWeight(double desiredWeight) {
+        this.desiredWeight = desiredWeight;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setActivityLevel(double activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
+    public double getMaintenanceCalories() {
+        return maintenanceCalories;
+    }
+
+    public void setMaintenanceCalories(double maintenanceCalories) {
+        this.maintenanceCalories = maintenanceCalories;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public Set<RecipeEaten> getRecipesEaten() {
+        return recipesEaten;
     }
 
     public long getId() {
@@ -133,15 +246,6 @@ public class User {
     }
 
 
-    public Set<Weight> getWeights() {
-        return weights;
-    }
-
-    public void setWeights(final Set<Weight> weights) {
-        this.weights = weights;
-    }
-
-
     public Set<FoodEaten> getFoodsEaten() {
         return foodsEaten;
     }
@@ -157,6 +261,10 @@ public class User {
 
     public void setExercisesPerformed(final Set<ExercisePerformed> exercisesPerformed) {
         this.exercisesPerformed = exercisesPerformed;
+    }
+
+    public void setRecipesEaten(Set<RecipeEaten> recipesEaten) {
+        this.recipesEaten = recipesEaten;
     }
 
 
@@ -176,7 +284,6 @@ public class User {
         if (passwordHash != null ? !passwordHash.equals(user.passwordHash) : user.passwordHash != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
-        if (weights != null ? !weights.equals(user.weights) : user.weights != null) return false;
         if (foodsEaten != null ? !foodsEaten.equals(user.foodsEaten) : user.foodsEaten != null) return false;
         if (recipesEaten != null ? !recipesEaten.equals(user.recipesEaten) : user.recipesEaten != null) return false;
         return exercisesPerformed != null ? exercisesPerformed.equals(user.exercisesPerformed) : user.exercisesPerformed == null;
@@ -197,7 +304,6 @@ public class User {
         result = 31 * result + (passwordHash != null ? passwordHash.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (weights != null ? weights.hashCode() : 0);
         result = 31 * result + (foodsEaten != null ? foodsEaten.hashCode() : 0);
         result = 31 * result + (recipesEaten != null ? recipesEaten.hashCode() : 0);
         result = 31 * result + (exercisesPerformed != null ? exercisesPerformed.hashCode() : 0);
@@ -237,7 +343,7 @@ public class User {
 
     public enum ActivityLevel {
 
-        SEDENTARY(1.25), LIGHTLY_ACTIVE(1.3), MODERATELY_ACTIVE(1.5), VERY_ACTIVE(1.7), EXTREMELY_ACTIVE(2.0);
+        SEDENTARY(1.2), LIGHTLY_ACTIVE(1.375), MODERATELY_ACTIVE(1.55), VERY_ACTIVE(1.725), EXTREMELY_ACTIVE(1.9);
 
         private double value;
 

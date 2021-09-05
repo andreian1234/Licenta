@@ -1,6 +1,7 @@
 package com.licenta.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class RecipeEaten {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
@@ -51,18 +53,10 @@ public class RecipeEaten {
         this.quantity = quantity;
     }
 
-    public double getCalories() {
-        return recipe.getCalories() * getRatio();
-    }
-
-    public double getTotalWeight() {
-        return recipe.getTotalWeight() * getRatio();
-    }
-
     //TODO Vezi cum faci ca sa schimbi datele din digest
 
 
-    private double getRatio() {
+    public double getRatio() {
         return quantity / recipe.getTotalWeight();
     }
 }

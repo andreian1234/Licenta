@@ -2,6 +2,7 @@ package com.licenta.controllers;
 
 import com.licenta.dto.HitDTO;
 import com.licenta.dto.RecipeDTO;
+import com.licenta.dto.RecipeEatenDigest;
 import com.licenta.dto.RootRecipeDTO;
 import com.licenta.models.Recipe;
 import com.licenta.models.RecipeEaten;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,15 +72,32 @@ public class RecipeController {
     public final RecipeEaten addRecipeEaten(
             @RequestBody final Map<String, Object> payload
     ) {
-        String link = payload.get("link").toString();
-        Double quantity = (Double) payload.get("quantity");
-        RecipeDTO recipeDTO = RecipeApiService.getRecipeDetailsObject(URLService.getApi(link));
-        LocalDate date = LocalDate.now();
-        User user = userService.findUserByEmail("andrei@gmail.com");
-        Recipe recipe = recipeService.saveOneRecipe(recipeDTO);
-        return recipeService.saveRecipeEaten(user, recipe, date, quantity);
+        Recipe recipe = recipeService.saveOneRecipe(RecipeApiService.getRecipeDetailsObject(URLService.getApi(payload.get("link").toString())));
+        return recipeService.saveRecipeEaten(userService.findUserByEmail("andrei@gmail.com"), recipe, LocalDate.now(), (Double) payload.get("quantity"));
 
     }
 
+    @GetMapping(path = "/eaten/{id}")
+    public final RecipeEaten getRecipeEatenById(
+            @PathVariable final Long id
+    ) {
+        return recipeService.findById(id);
+    }
+
+    @GetMapping(path = "eaten/stats/{id}")
+    public final RecipeEatenDigest getRecipeEatenDigest(
+            @PathVariable final Long id
+    ) {
+        return recipeService.getRecipeEatenDigest(id);
+    }
+
+    @GetMapping(path = "/eaten/stats/date/{date}")
+    public final RecipeEatenDigest getDigestByDay(
+            @PathVariable final String date
+    ) {
+
+        User user = userService.findUserByEmail("andrei@gmail.com");
+        return recipeService.getDigestFromDate(user, LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    }
 
 }

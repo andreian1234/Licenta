@@ -1,6 +1,7 @@
 package com.licenta.controllers;
 
 import com.licenta.dto.FoodDTO;
+import com.licenta.dto.FoodEatenDigest;
 import com.licenta.dto.HintDTO;
 import com.licenta.dto.RootFoodDTO;
 import com.licenta.models.Food;
@@ -16,6 +17,7 @@ import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class FoodController {
 
     @GetMapping("/find")
     public List<Food> getAllFoods() {
-        return this.foodRepository.findAll();
+        return foodService.searchFoods();
     }
 
     @SneakyThrows
@@ -40,18 +42,7 @@ public class FoodController {
     public final List<FoodDTO> addFoodToDB(@PathVariable final String ingredient) {
 
 
-//        userService.createUser(new UserDTO(
-//                User.Gender.MALE,
-//                LocalDate.of(1997,12,2),
-//                180,
-//                User.ActivityLevel.EXTREMELY_ACTIVE,
-//                "andrei@gmail.com",
-//                "Andrei",
-//                "Ancuta",
-//                100,
-//                30,
-//                2500
-//        ), "parola");
+
 
         RootFoodDTO rootFoodDTO = FoodApiService.getFoodRootDetailsObject(URLService.getApi(URLService.getFoodUrl(ingredient)));
         List<FoodDTO> foodDTOList = new ArrayList<>();
@@ -80,15 +71,31 @@ public class FoodController {
             @RequestBody final Map<String, Object> payload
     ) {
         Long foodId = Long.valueOf(payload.get("foodId").toString());
-        System.out.println("FoodId: " + foodId);
         Double quantity = (Double) payload.get("quantity");
-        System.out.println("Quantity: " + quantity);
         Food food = foodService.searchById(foodId);
-        System.out.println(food);
         LocalDate localDate = LocalDate.now();
         User user = userService.findUserByEmail("andrei@gmail.com");
-        return foodService.saveOneFoodEaten(user, food, localDate, quantity);
-
+        FoodEaten foodEaten = foodService.saveOneFoodEaten(user, food, localDate, quantity);
+        return foodEaten;
     }
 
+    @GetMapping(path = "/eaten/get/{id}")
+    public Long findFoodEatenById(@PathVariable final Long id) {
+        return foodService.findById(id).getUser().getId();
+    }
+
+    @GetMapping(path = "/eaten/stats/{id}")
+    public final FoodEatenDigest getFoodEeatenNutrients(
+            @PathVariable final Long id
+    ) {
+        return foodService.getNutrientsFromFoodEaten(id);
+    }
+
+    @GetMapping(path = "/eaten/stats/date/{date}")
+    public final FoodEatenDigest getNutrientsByDate(
+            @PathVariable final String date
+    ) {
+        User user = userService.findUserByEmail("andrei@gmail.com");
+        return foodService.getNutrientsFromDate(user, LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    }
 }

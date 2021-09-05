@@ -1,40 +1,31 @@
 package com.licenta.services;
 
 import com.licenta.dto.UserDTO;
-import com.licenta.dto.WeightDTO;
 import com.licenta.dto.convertor.UserToUserDTO;
-import com.licenta.dto.convertor.WeightToWeightDTO;
 import com.licenta.models.User;
-import com.licenta.models.Weight;
 import com.licenta.repositories.UserRepository;
-import com.licenta.repositories.WeightRepository;
+import lombok.val;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.Random;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Service
 public final class UserService {
 
     private final UserRepository userRepository;
-    private final WeightRepository weightRepository;
     private final UserToUserDTO userDTOConverter;
-    private final WeightToWeightDTO weightDTOConverter;
 
     @Autowired
     public UserService(
             final UserRepository userRepository,
-            final WeightRepository weightRepository,
-            final UserToUserDTO userDTOConverter,
-            final WeightToWeightDTO weightDTOConverter
+            final UserToUserDTO userDTOConverter
     ) {
         this.userRepository = userRepository;
-        this.weightRepository = weightRepository;
         this.userDTOConverter = userDTOConverter;
-        this.weightDTOConverter = weightDTOConverter;
     }
 
 
@@ -53,23 +44,60 @@ public final class UserService {
         return userDTOConverter.convert(user);
     }
 
-    public void createUser(
-            final UserDTO userDTO,
-            final String password
+    public User createUser(
+            final UserDTO userDTO
     ) {
+        double fat, carbs, protein;
+        val gender = userDTO.getGender().equals(User.Gender.MALE) ? 5 : -161;
+        double maintenanceCalories = (10 * userDTO.getDesiredWeight() + 6.25 * userDTO.getHeightInCm() - 5 * Period.between(userDTO.getBirthdate(), LocalDate.now()).getYears() + gender) * userDTO.getActivityLevel().getValue();
+        switch (userDTO.getDiet()) {
+            case "paleo":
+                fat = 0.40;
+                protein = 0.35;
+                carbs = 0.25;
+                break;
+            case "keto":
+                fat = 0.70;
+                protein = 0.20;
+                carbs = 0.10;
+                break;
+            case "vegan":
+                fat = 0.40;
+                protein = 0.30;
+                carbs = 0.30;
+                break;
+            case "balanced":
+                fat = 0.30;
+                protein = 0.20;
+                carbs = 0.50;
+                break;
+            default:
+                fat = 0;
+                protein = 0;
+                carbs = 0;
+        }
         final User user = new User(
-                userDTO.getId(),
-                userDTO.getGender(),
+                userDTO.getId() + 1,
+                userDTO.getGender().toString(),
                 userDTO.getBirthdate(),
                 userDTO.getHeightInCm(),
                 userDTO.getActivityLevel(),
                 userDTO.getEmail(),
-                encryptPassword(password),
                 userDTO.getFirstName(),
-                userDTO.getLastName()
+                userDTO.getLastName(),
+                maintenanceCalories,
+                userDTO.getWeight(),
+                userDTO.getDesiredWeight(),
+                userDTO.getCreatedAt(),
+                userDTO.getDiet(),
+                fat,
+                carbs,
+                protein,
+                userDTO.getPassword()
         );
-        userRepository.save(user);
+        return userRepository.save(user);
     }
+
 
     public void updateUser(final UserDTO userDTO) {
         updateUser(userDTO, null);
@@ -98,35 +126,6 @@ public final class UserService {
         userRepository.save(user);
     }
 
-
-    public void updateWeight(
-            final UserDTO userDTO,
-            final Date date,
-            final double pounds
-    ) {
-        final User user = userRepository.findByEmailEquals(userDTO.getEmail());
-        Weight weight = weightRepository.findByUserAndDate(user, date);
-        if (weight == null) {
-            weight = new Weight(
-                    new Random().nextLong(),
-                    user,
-                    date,
-                    pounds
-            );
-        } else {
-            weight.setPounds(pounds);
-        }
-        weightRepository.save(weight);
-    }
-
-    public WeightDTO findWeightOnDate(
-            final UserDTO userDTO,
-            final Date date
-    ) {
-        final User user = userRepository.findByEmailEquals(userDTO.getEmail());
-        final Weight weight = weightRepository.findByUserMostRecentOnDate(user, date);
-        return weightDTOConverter.convert(weight);
-    }
 
     public boolean verifyPassword(
             final UserDTO userDTO,
