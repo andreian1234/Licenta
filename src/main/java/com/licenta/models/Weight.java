@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Optional;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,7 +19,7 @@ public final class Weight {
 
     @Id
     @Column(name = "id")
-    private UUID id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -34,12 +32,12 @@ public final class Weight {
     private Double pounds;
 
     public Weight(
-            final UUID id,
+            final long id,
             final User user,
-            final Date date,
+            final java.util.Date date,
             final double pounds
     ) {
-        this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
+        this.id = id;
         this.user = user;
         this.date = (Date) date.clone();
         this.pounds = pounds;

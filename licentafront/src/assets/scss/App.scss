@@ -1,0 +1,9 @@
+@import "./Colors.scss";
+
+* {
+  color: $text-color;
+}
+
+.App {
+  background-color: $bg-color;
+}

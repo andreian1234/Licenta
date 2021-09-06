@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -20,7 +20,7 @@ public class RecipeEatenDTO {
     @JsonIgnore
     private UUID userId;
     private RecipeDTO recipeDTO;
-    private Date date;
+    private LocalDate date;
     private double quantity;
 
     @Override

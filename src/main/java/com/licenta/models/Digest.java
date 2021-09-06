@@ -39,5 +39,10 @@ public class Digest {
 
 //    @ElementCollection
 //    List<Sub> subList = new ArrayList<>();
+public Digest(double total, double daily) {
+    this.daily = daily;
+    this.total = total;
 
+
+}
 }

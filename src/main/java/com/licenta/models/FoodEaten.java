@@ -1,16 +1,18 @@
 package com.licenta.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Getter
+@Setter
 @Entity
 @Table(
         name = "food_eaten",
@@ -18,12 +20,16 @@ import java.util.UUID;
 )
 public final class FoodEaten {
 
+
     @Id
     @Column(name = "id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
@@ -31,65 +37,31 @@ public final class FoodEaten {
     private Food food;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "quantity", nullable = false)
     private Double quantity;
 
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
     public FoodEaten(
-            final UUID id,
+            final long id,
             final User user,
             final Food food,
-            final Date date,
+            final LocalDate date,
             final double quantity
     ) {
-        this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
-        this.user = user;
-        this.food = food;
-        this.date = (Date) date.clone();
-        this.quantity = quantity;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
         this.user = user;
-    }
-
-    public Food getFood() {
-        return food;
-    }
-
-    public void setFood(Food food) {
         this.food = food;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
+
 
     public double getEnercKcal() {
         return food.getNutrients().getEnercKcal() * getRatio();

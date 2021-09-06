@@ -8,8 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @NoArgsConstructor
 @Getter
@@ -23,7 +22,11 @@ public final class Recipe {
 
     @Id
     @Column(name = "id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "label")
+    private String label;
 
     @Column(name = "image")
     private String image;
@@ -32,7 +35,7 @@ public final class Recipe {
     private String url;
 
     @Column(name = "yield")
-    private double yield;
+    private int yield;
 
     @Column(name = "calories")
     private double calories;
@@ -71,10 +74,10 @@ public final class Recipe {
     private List<Digest> digestList = new ArrayList<>();
 
     public Recipe(
-            UUID id,
+            String label,
             String image,
             String url,
-            double yield,
+            int yield,
             double calories,
             double totalWeight,
             String self,
@@ -87,7 +90,7 @@ public final class Recipe {
             List<String> dishTypeList,
             List<Ingredient> ingredientList,
             List<Digest> digestList) {
-        this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
+        this.label = label;
         this.image = image;
         this.url = url;
         this.yield = yield;

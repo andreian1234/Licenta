@@ -1,6 +1,9 @@
 package com.licenta.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
@@ -18,6 +21,17 @@ public class DigestDTO implements Serializable {
      boolean hasRDI;
      double daily;
      String unit;
+
+     public DigestDTO(String label, String tag, String schemaOrgTag, double total, boolean hasRDI, double daily, String unit) {
+          this.label = label;
+          this.tag = tag;
+          this.schemaOrgTag = schemaOrgTag;
+          this.total = total;
+          this.hasRDI = hasRDI;
+          this.daily = daily;
+          this.unit = unit;
+     }
+
      List<SubDTO> subDTO;
 
 

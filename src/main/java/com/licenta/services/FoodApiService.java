@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FoodApiService {
 
-    private static RootFoodDTO getFoodRootDetailsObject(JsonObject jsonObject) throws Exception {
+    public static RootFoodDTO getFoodRootDetailsObject(JsonObject jsonObject) throws Exception {
         RootFoodDTO rootFoodDTOObj;
         LinksDTO linksDTOObj;
         NextDTO nextDTOObj;
@@ -63,46 +63,54 @@ public class FoodApiService {
 
             foodDTOObj.setImage(!foodJson.has("image") ? "" : ((JsonPrimitive) foodJson.get("image")).getAsString());
 
-            foodDTOObj.setFoodContentsLabel(!foodJson.has("setFoodContentsLabel") ? "" : ((JsonPrimitive) foodJson.get("setFoodContentsLabel")).getAsString());
-
             foodDTOObj.setCategoryLabel(!foodJson.has("categoryLabel") ? "" : ((JsonPrimitive) foodJson.get("categoryLabel")).getAsString());
 
 
             //Get nutrients Obj
-            NutrientsDTO nutrientsDTOObj;
+            NutrientsDTO nutrientsDTOObj = new NutrientsDTO();
             JsonObject nutrientsJson = (JsonObject) foodJson.get("nutrients");
-            var enercKcal = (JsonPrimitive) nutrientsJson.get("ENERC_KCAL");
-            var procnt = (JsonPrimitive) nutrientsJson.get("PROCNT");
-            var fat = (JsonPrimitive) nutrientsJson.get("FAT");
-            var chocdf = (JsonPrimitive) nutrientsJson.get("CHOCDF");
-            var fibtg = (JsonPrimitive) nutrientsJson.get("FIBTG");
-            nutrientsDTOObj = new NutrientsDTO(enercKcal.getAsDouble(), procnt.getAsDouble(), fat.getAsDouble(), chocdf.getAsDouble(), fibtg.getAsDouble());
+            nutrientsDTOObj.setEnercKcal(!nutrientsJson.has("ENERC_KCAL") ? 0 : ((JsonPrimitive) nutrientsJson.get("ENERC_KCAL")).getAsDouble());
+            nutrientsDTOObj.setProtein(!nutrientsJson.has("PROCNT") ? 0 : ((JsonPrimitive) nutrientsJson.get("PROCNT")).getAsDouble());
+            nutrientsDTOObj.setFat(!nutrientsJson.has("FAT") ? 0 : ((JsonPrimitive) nutrientsJson.get("FAT")).getAsDouble());
+            nutrientsDTOObj.setCarbs(!nutrientsJson.has("CHOCDF") ? 0 : ((JsonPrimitive) nutrientsJson.get("CHOCDF")).getAsDouble());
+            nutrientsDTOObj.setFiber(!nutrientsJson.has("FIBTG") ? 0 : ((JsonPrimitive) nutrientsJson.get("FIBTG")).getAsDouble());
+
 
             foodDTOObj.setNutrientsDTO(nutrientsDTOObj);
+            MeasureDTO measuresObj = new MeasureDTO();
 
             //Get measueres ObjArray
-
-            JsonArray measuresJsonArray = (JsonArray) ((JsonObject) hintsJsonArray.get(i)).get("measures");
-            MeasureDTO measuresObj = new MeasureDTO();
-            for (int j = 0; j < measuresJsonArray.size(); j++) {
-                MeasureDTO measureDTOObj = new MeasureDTO();
-
-                if(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Serving"))
-                {
-                    measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
-                    measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
-
+            if (foodJson.has("servingSizes")) {
+                JsonArray serrvingSizes = (JsonArray) foodJson.get("servingSizes");
+                for (int j = 0; j < serrvingSizes.size(); j++) {
+                    if (((JsonObject) serrvingSizes.get(j)).has("label"))
+                        if ((((JsonObject) serrvingSizes.get(j)).get("label").getAsString().equals("Gram")) ||
+                                (((JsonObject) serrvingSizes.get(j)).get("label").getAsString().equals("Milliliter"))) {
+                            measuresObj.setLabel(((JsonObject) serrvingSizes.get(j)).get("label").getAsString());
+                            measuresObj.setWeight(((JsonObject) serrvingSizes.get(j)).get("quantity").getAsDouble());
+                        }
                 }
-
+            } else {
+                JsonArray measuresJsonArray = (JsonArray) ((JsonObject) hintsJsonArray.get(i)).get("measures");
+                for (int j = 0; j < measuresJsonArray.size(); j++) {
+                    if (((JsonObject) measuresJsonArray.get(j)).has("label")) {
+                        if (((JsonObject) measuresJsonArray.get(j)).get("label").getAsString().equals("Whole")) {
+                            measuresObj.setLabel(((JsonObject) measuresJsonArray.get(j)).get("label").getAsString());
+                            measuresObj.setWeight(((JsonObject) measuresJsonArray.get(j)).get("weight").getAsDouble());
+                        }
+                    } else {
+                        measuresObj.setLabel("");
+                        measuresObj.setWeight(0);
+                    }
+                }
             }
-
-
             hintDTOObj = new HintDTO(foodDTOObj, measuresObj);
             foodDTOObj.setMeasureDTO(measuresObj);
             hintDTOListObj.add(hintDTOObj);
         }
+
         rootFoodDTOObj = new RootFoodDTO(text.getAsString(), hintDTOListObj, linksDTOObj);
         return rootFoodDTOObj;
-    }
 
+    }
 }

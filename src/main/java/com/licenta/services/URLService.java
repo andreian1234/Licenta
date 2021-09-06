@@ -36,7 +36,7 @@ public class URLService {
         return apiDomain + ingredient + apiKeys;
     }
 
-    private static String getFoodUrl(String ingredient) {
+    public static String getFoodUrl(String ingredient) {
         String apiDomainKeys = "https://api.edamam.com/api/food-database/v2/parser?app_id=0e606b1e&app_key=78de0ba1870a61e88db02d2c6d158d4d&ingr=";
         String logging = "&nutrition-type=logging";
         return apiDomainKeys + ingredient + logging;

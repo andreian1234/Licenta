@@ -4,8 +4,7 @@ package com.licenta.models;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @Entity
 @NoArgsConstructor
@@ -17,7 +16,11 @@ public class Food {
 
     @Id
     @Column(name = "id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "foodId")
+    private String foodId;
 
     @Embedded
     private Nutrients nutrients;
@@ -37,15 +40,16 @@ public class Food {
     @Embedded
     private Measure measure;
 
-    public Food(UUID id,
-                final Nutrients nutrients,
-                final String category,
-                final String categoryLabel,
-                final String image,
-                final String label,
-                final Measure measure
+    public Food(
+            final String foodId,
+            final String label,
+            final Nutrients nutrients,
+            final String category,
+            final String categoryLabel,
+            final String image,
+            final Measure measure
     ) {
-        this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
+        this.foodId = foodId;
         this.nutrients = nutrients;
         this.category = category;
         this.categoryLabel = categoryLabel;
@@ -54,11 +58,19 @@ public class Food {
         this.measure = measure;
     }
 
-    public UUID getId() {
+    public String getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(String foodId) {
+        this.foodId = foodId;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(long id) {
         this.id = id;
     }
 

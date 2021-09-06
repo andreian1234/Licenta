@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -13,12 +12,10 @@ import java.util.UUID;
 public class ExerciseDTO implements Serializable {
 
 
-    private UUID id;
-    private String code;
+    private Long id;
     private Double metabolicEquivalent;
     private String category;
     private String description;
-
 
     @Override
     public boolean equals(Object o) {
@@ -28,7 +25,6 @@ public class ExerciseDTO implements Serializable {
         ExerciseDTO that = (ExerciseDTO) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (code != null ? !code.equals(that.code) : that.code != null) return false;
         if (metabolicEquivalent != null ? !metabolicEquivalent.equals(that.metabolicEquivalent) : that.metabolicEquivalent != null)
             return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
@@ -38,11 +34,9 @@ public class ExerciseDTO implements Serializable {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (metabolicEquivalent != null ? metabolicEquivalent.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
-
 }

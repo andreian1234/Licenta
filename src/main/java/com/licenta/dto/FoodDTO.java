@@ -20,11 +20,11 @@ public class FoodDTO implements Serializable {
      String category;
      String categoryLabel;
      String image;
-     String foodContentsLabel;
      MeasureDTO measureDTO;
 
      @Override
      public boolean equals(Object o) {
+
           if (this == o) return true;
           if (!(o instanceof FoodDTO)) return false;
 
@@ -38,7 +38,7 @@ public class FoodDTO implements Serializable {
           if (categoryLabel != null ? !categoryLabel.equals(foodDTO.categoryLabel) : foodDTO.categoryLabel != null)
                return false;
           if (image != null ? !image.equals(foodDTO.image) : foodDTO.image != null) return false;
-          return foodContentsLabel != null ? foodContentsLabel.equals(foodDTO.foodContentsLabel) : foodDTO.foodContentsLabel == null;
+          return measureDTO != null ? measureDTO.equals(foodDTO.measureDTO) : foodDTO.measureDTO == null;
      }
 
      @Override
@@ -48,8 +48,8 @@ public class FoodDTO implements Serializable {
           result = 31 * result + (nutrientsDTO != null ? nutrientsDTO.hashCode() : 0);
           result = 31 * result + (category != null ? category.hashCode() : 0);
           result = 31 * result + (categoryLabel != null ? categoryLabel.hashCode() : 0);
-          result = 31 * result + (image != null ? image.hashCode() : 0);
-          result = 31 * result + (foodContentsLabel != null ? foodContentsLabel.hashCode() : 0);
+         result = 31 * result + (image != null ? image.hashCode() : 0);
+         result = 31 * result + (measureDTO != null ? measureDTO.hashCode() : 0);
           return result;
      }
 }

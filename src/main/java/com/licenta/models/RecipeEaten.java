@@ -1,14 +1,13 @@
 package com.licenta.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
@@ -22,10 +21,12 @@ public class RecipeEaten {
 
     @Id
     @Column(name = "id")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
@@ -33,37 +34,29 @@ public class RecipeEaten {
     private Recipe recipe;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "quantity", nullable = false)
     private double quantity;
 
     public RecipeEaten(
-            UUID id,
+            long id,
             User user,
             Recipe recipe,
-            Date date,
+            LocalDate date,
             double quantity
     ) {
-        this.id = Optional.ofNullable(id).orElse(UUID.randomUUID());
+        this.id = id;
         this.user = user;
         this.recipe = recipe;
         this.date = date;
         this.quantity = quantity;
     }
 
-    public double getCalories() {
-        return recipe.getCalories() * getRatio();
-    }
-
-    public double getTotalWeight() {
-        return recipe.getTotalWeight() * getRatio();
-    }
-
     //TODO Vezi cum faci ca sa schimbi datele din digest
 
 
-    private double getRatio() {
+    public double getRatio() {
         return quantity / recipe.getTotalWeight();
     }
 }
