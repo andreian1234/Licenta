@@ -73,7 +73,7 @@ public class RecipeController {
             @RequestBody final Map<String, Object> payload
     ) {
         Recipe recipe = recipeService.saveOneRecipe(RecipeApiService.getRecipeDetailsObject(URLService.getApi(payload.get("link").toString())));
-        return recipeService.saveRecipeEaten(userService.findUserByEmail("andrei@gmail.com"), recipe, LocalDate.now(), (Double) payload.get("quantity"));
+        return recipeService.saveRecipeEaten(userService.findUserByEmail("andreian@gmail.com"), recipe, LocalDate.now(), (Double) payload.get("quantity"));
 
     }
 
@@ -96,7 +96,7 @@ public class RecipeController {
             @PathVariable final String date
     ) {
 
-        User user = userService.findUserByEmail("andrei@gmail.com");
+        User user = userService.findUserByEmail("andreian@gmail.com");
         return recipeService.getDigestFromDate(user, LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 

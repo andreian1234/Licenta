@@ -44,10 +44,13 @@ public final class UserService {
         return userDTOConverter.convert(user);
     }
 
+
     public User createUser(
             final UserDTO userDTO
     ) {
-        double fat, carbs, protein;
+        double fat;
+        double carbs;
+        double protein;
         val gender = userDTO.getGender().equals(User.Gender.MALE) ? 5 : -161;
         double maintenanceCalories = (10 * userDTO.getDesiredWeight() + 6.25 * userDTO.getHeightInCm() - 5 * Period.between(userDTO.getBirthdate(), LocalDate.now()).getYears() + gender) * userDTO.getActivityLevel().getValue();
         switch (userDTO.getDiet()) {
@@ -140,4 +143,6 @@ public final class UserService {
         final String salt = BCrypt.gensalt(10, new SecureRandom());
         return BCrypt.hashpw(rawPassword, salt);
     }
+
+
 }

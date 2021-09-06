@@ -66,27 +66,31 @@ public class FoodService {
         nutrients.setFat(foodEaten.getFat());
         nutrients.setFiber(foodEaten.getFiber());
         nutrients.setProtein(foodEaten.getProtein());
-
-        return new FoodEatenDigest(nutrients, foodEaten.getQuantity());
+        List<FoodEaten> foodEatenList = new ArrayList<>();
+        foodEatenList.add(foodEaten);
+        return new FoodEatenDigest(foodEatenList, nutrients, foodEaten.getQuantity());
     }
 
     public FoodEatenDigest getNutrientsFromDate(User user, LocalDate localDate) {
         val foods = foodEatenRepository.findByUserEqualsAndDateEquals(user, localDate);
-        FoodEatenDigest nutrients = new FoodEatenDigest();
-        if (foods != null) {
-            nutrients = getNutrientsFromFoodEaten(foods.get(0).getId());
+        FoodEatenDigest foodEatenDigest = new FoodEatenDigest();
+        if (foods.size() != 0) {
+            foodEatenDigest = getNutrientsFromFoodEaten(foods.get(0).getId());
+            foodEatenDigest.getFoodEatenList().add(foods.get(0));
             if (foods.size() > 1) {
                 for (int i = 1; i < foods.size(); i++) {
-                    nutrients.getNutrients().setProtein(nutrients.getNutrients().getProtein() + foods.get(i).getProtein());
-                    nutrients.getNutrients().setFiber(nutrients.getNutrients().getFiber() + foods.get(i).getFiber());
-                    nutrients.getNutrients().setCarbs(nutrients.getNutrients().getCarbs() + foods.get(i).getCarbs());
-                    nutrients.getNutrients().setFat(nutrients.getNutrients().getFat() + foods.get(i).getFat());
-                    nutrients.getNutrients().setEnercKcal(nutrients.getNutrients().getEnercKcal() + foods.get(i).getEnercKcal());
-                    nutrients.setTotalWeight(nutrients.getTotalWeight() + foods.get(i).getQuantity());
+                    foodEatenDigest.getNutrients().setProtein(foodEatenDigest.getNutrients().getProtein() + foods.get(i).getProtein());
+                    foodEatenDigest.getNutrients().setFiber(foodEatenDigest.getNutrients().getFiber() + foods.get(i).getFiber());
+                    foodEatenDigest.getNutrients().setCarbs(foodEatenDigest.getNutrients().getCarbs() + foods.get(i).getCarbs());
+                    foodEatenDigest.getNutrients().setFat(foodEatenDigest.getNutrients().getFat() + foods.get(i).getFat());
+                    foodEatenDigest.getNutrients().setEnercKcal(foodEatenDigest.getNutrients().getEnercKcal() + foods.get(i).getEnercKcal());
+                    foodEatenDigest.setTotalWeight(foodEatenDigest.getTotalWeight() + foods.get(i).getQuantity());
+                    foodEatenDigest.getFoodEatenList().add(foods.get(i));
                 }
             }
         }
-        return nutrients;
+
+        return foodEatenDigest;
 
 
     }

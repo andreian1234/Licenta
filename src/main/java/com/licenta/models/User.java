@@ -56,6 +56,7 @@ public class User {
     @JsonManagedReference
     private Set<RecipeEaten> recipesEaten = new HashSet<>();
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<ExercisePerformed> exercisesPerformed = new HashSet<>();
 
     public User(

@@ -37,11 +37,10 @@ public class FoodController {
         return foodService.searchFoods();
     }
 
+
     @SneakyThrows
     @GetMapping("/search/{ingredient}")
     public final List<FoodDTO> addFoodToDB(@PathVariable final String ingredient) {
-
-
 
 
         RootFoodDTO rootFoodDTO = FoodApiService.getFoodRootDetailsObject(URLService.getApi(URLService.getFoodUrl(ingredient)));
@@ -74,9 +73,8 @@ public class FoodController {
         Double quantity = (Double) payload.get("quantity");
         Food food = foodService.searchById(foodId);
         LocalDate localDate = LocalDate.now();
-        User user = userService.findUserByEmail("andrei@gmail.com");
-        FoodEaten foodEaten = foodService.saveOneFoodEaten(user, food, localDate, quantity);
-        return foodEaten;
+        User user = userService.findUserByEmail("andreian@gmail.com");
+        return foodService.saveOneFoodEaten(user, food, localDate, quantity);
     }
 
     @GetMapping(path = "/eaten/get/{id}")
@@ -91,11 +89,11 @@ public class FoodController {
         return foodService.getNutrientsFromFoodEaten(id);
     }
 
-    @GetMapping(path = "/eaten/stats/date/{date}")
+    @GetMapping(path = "/eaten/stats/date")
     public final FoodEatenDigest getNutrientsByDate(
-            @PathVariable final String date
+            @RequestParam final String date
     ) {
-        User user = userService.findUserByEmail("andrei@gmail.com");
+        User user = userService.findUserByEmail("andreian@gmail.com");
         return foodService.getNutrientsFromDate(user, LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 }

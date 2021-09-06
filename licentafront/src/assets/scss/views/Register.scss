@@ -1,0 +1,22 @@
+@import "../Colors.scss";
+
+.register-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100vh;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2em;
+  color: $text-color;
+  font-weight: 900;
+}
+
+.form-datepicker {
+  margin-bottom: 1em;
+}

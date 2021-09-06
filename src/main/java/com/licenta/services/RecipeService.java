@@ -65,27 +65,33 @@ public class RecipeService {
 
     public RecipeEatenDigest getRecipeEatenDigest(Long id) {
         RecipeEaten recipeEaten = recipeEatenRepository.getById(id);
+        List<RecipeEaten> recipeEatenList = new ArrayList<>();
+        recipeEatenList.add(recipeEaten);
         List<Digest> digestList = recipeEaten.getRecipe().getDigestList();
         for (Digest digest : digestList) {
             digest.setDaily(digest.getDaily() * recipeEaten.getRatio());
             digest.setTotal(digest.getTotal() * recipeEaten.getRatio());
         }
-        return new RecipeEatenDigest(id, digestList, recipeEaten.getRecipe().getCalories() * recipeEaten.getRatio(), recipeEaten.getRecipe().getTotalWeight() * recipeEaten.getRatio());
+        return new RecipeEatenDigest(recipeEatenList, digestList, recipeEaten.getRecipe().getCalories() * recipeEaten.getRatio(), recipeEaten.getRecipe().getTotalWeight() * recipeEaten.getRatio());
     }
 
     public RecipeEatenDigest getDigestFromDate(User user, LocalDate localDate) {
         val recipes = recipeEatenRepository.findByUserEqualsAndDateEquals(user, localDate);
-        double calories, totalWeight;
+        List<RecipeEaten> recipeEatenList = new ArrayList<>();
+        double calories;
+        double totalWeight;
         RecipeEatenDigest recipeEaten;
         List<Digest> recipesDigest = new ArrayList<>();
         if (recipes.size() != 0) {
             recipeEaten = getRecipeEatenDigest(recipes.get(0).getId());
+            recipeEatenList.add(recipes.get(0));
             recipesDigest = recipeEaten.getDigestList();
             calories = recipeEaten.getCalories();
             totalWeight = recipeEaten.getTotalWeight();
             if (recipes.size() > 1) {
                 for (int i = 1; i < recipes.size(); i++) {
                     val recipeEatenDigest = getRecipeEatenDigest(recipes.get(i).getId());
+                    recipeEatenList.add(recipes.get(i));
                     for (int j = 0; j < recipeEatenDigest.getDigestList().size(); j++) {
                         recipesDigest.get(j).setTotal(recipesDigest.get(j).getTotal() + recipeEatenDigest.getDigestList().get(j).getTotal());
                         recipesDigest.get(j).setDaily(recipesDigest.get(j).getDaily() + recipeEatenDigest.getDigestList().get(j).getDaily());
@@ -97,8 +103,12 @@ public class RecipeService {
         } else {
             calories = 0;
             totalWeight = 0;
+            for (int i = 0; i < 26; i++) {
+                Digest digest = new Digest(0, 0);
+                recipesDigest.add(digest);
+            }
         }
 
-        return new RecipeEatenDigest(Long.valueOf(1), recipesDigest, calories, totalWeight);
+        return new RecipeEatenDigest(recipeEatenList, recipesDigest, calories, totalWeight);
     }
 }
