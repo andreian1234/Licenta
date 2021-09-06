@@ -1,6 +1,7 @@
 package com.licenta.controllers;
 
 import com.licenta.dto.UserDTO;
+import com.licenta.models.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController extends AbstractController {
-
-    @PostMapping("/userpass")
+    @PostMapping(value = "/userpass")
     public LoginResponse doLogin(
             @RequestBody final Map<String, Object> payload,
             final HttpServletResponse response
@@ -36,8 +36,8 @@ public class AuthController extends AbstractController {
         // Check credentials
         final String username = (String) payload.get("username");
         final String password = (String) payload.get("password");
-        final UserDTO userDTO = userService.findByEmail(username);
-        if (userDTO == null || !userService.verifyPassword(userDTO, password)) {
+        final User user = userService.findByEmailEquals(username);
+        if (user == null || !userService.verifyPassword(user, password)) {
             loginResponse.setError("The username and password do not match");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return loginResponse;
@@ -54,6 +54,14 @@ public class AuthController extends AbstractController {
                 .compact();
         loginResponse.setToken(token);
         return loginResponse;
+    }
+
+    @PostMapping(path = "/signup")
+    public final User saveUser(
+            @RequestBody final UserDTO userDTO
+    ) {
+        return userService.createUser(userDTO);
+
     }
 
     private static class LoginResponse {

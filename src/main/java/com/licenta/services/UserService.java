@@ -36,12 +36,12 @@ public final class UserService {
         return userRepository.findByEmailEquals(email);
     }
 
-    public UserDTO findByEmail(final String email) {
+    public User findByEmailEquals(final String email) {
         if (email == null) {
             return null;
         }
         final User user = userRepository.findByEmailEquals(email);
-        return userDTOConverter.convert(user);
+        return user;
     }
 
 
@@ -131,11 +131,10 @@ public final class UserService {
 
 
     public boolean verifyPassword(
-            final UserDTO userDTO,
+            final User user,
             final String password
     ) {
-        final User user = userRepository.findByEmailEquals(userDTO.getEmail());
-        return BCrypt.checkpw(password, user.getPasswordHash());
+        return password.equals(user.getPasswordHash());
     }
 
 

@@ -1,6 +1,7 @@
 package com.licenta.controllers;
 
 import com.licenta.dto.UserDTO;
+import com.licenta.models.User;
 import com.licenta.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,8 +27,8 @@ public abstract class AbstractController {
      * Used by child class controllers to obtain the currently authenticated user from Spring Security.
      */
 
-    final UserDTO currentAuthenticatedUser(final HttpServletRequest request) {
-        return userService.findByEmail((String) request.getAttribute("email"));
+    final User currentAuthenticatedUser(final HttpServletRequest request) {
+        return userService.findByEmailEquals((String) request.getAttribute("email"));
     }
 
     final java.sql.Date stringToSqlDate(final String dateString) {
