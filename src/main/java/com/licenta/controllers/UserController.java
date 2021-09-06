@@ -1,13 +1,15 @@
 package com.licenta.controllers;
 
 import com.licenta.dto.*;
-import com.licenta.models.User;
 import com.licenta.services.FoodService;
 import com.licenta.services.HistoryService;
 import com.licenta.services.RecipeService;
 import com.licenta.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -76,11 +78,5 @@ public class UserController {
         return historyService.getStatsCaloriesFromDate(userService.findUserByEmail(mail), LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern)));
     }
 
-    @PostMapping(path = "/signup")
-    public final User saveUser(
-            @RequestBody final UserDTO userDTO
-    ) {
-        return userService.createUser(userDTO);
 
-    }
 }
