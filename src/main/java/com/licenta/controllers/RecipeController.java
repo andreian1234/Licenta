@@ -23,7 +23,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("recipes")
+@RequestMapping("/recipes")
 public class RecipeController {
 
 
