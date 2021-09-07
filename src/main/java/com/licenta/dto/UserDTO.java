@@ -23,15 +23,15 @@ public class UserDTO implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private double maintenanceCalories;
     private double weight;
     private double desiredWeight;
-    private LocalDate createdAt;
+    private String password;
     private String diet;
     private double fat;
     private double carbs;
     private double protein;
-    private String password;
+    private LocalDate createdAt;
+    private double maintenanceCalories;
 
 
     public UserDTO(User.Gender gender, LocalDate birthdate, double heightInCm, User.ActivityLevel activityLevel, String email, String firstName, String lastName, double maintenanceCalories, double weight, double desiredWeight, LocalDate localDate, String diet, double fat, double carbs, double protein, String password) {
