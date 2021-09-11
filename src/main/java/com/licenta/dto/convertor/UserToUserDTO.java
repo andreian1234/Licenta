@@ -23,7 +23,7 @@ public final class UserToUserDTO implements Converter<User, UserDTO> {
         UserDTO dto = null;
         if (user != null) {
             dto = new UserDTO(
-                    user.getId(),
+//                    user.getId(),
                     user.getGender(),
                     user.getBirthdate(),
                     user.getHeightInCm(),

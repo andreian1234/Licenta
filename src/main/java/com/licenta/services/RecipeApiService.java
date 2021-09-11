@@ -34,12 +34,26 @@ public class RecipeApiService {
         var count = (JsonPrimitive) response.get("count");
         rootRecipeDTOObj.setTo(count.getAsInt());
 
-        JsonObject linksJsonObj = (JsonObject) response.get("_links");
-        JsonObject nextJsonObj = (JsonObject) linksJsonObj.get("next");
-        var href = (JsonPrimitive) nextJsonObj.get("href");
-        var title = (JsonPrimitive) nextJsonObj.get("title");
+        JsonObject linksJsonObj = null;
+        if (response.has("_links"))
+            linksJsonObj = (JsonObject) response.get("_links");
 
-        nextDTOObj = new NextDTO(href.getAsString(), title.getAsString());
+
+        JsonObject nextJsonObj = null;
+        JsonPrimitive href = null;
+        JsonPrimitive title = null;
+
+        if (linksJsonObj.has("next")) {
+
+            nextJsonObj = (JsonObject) linksJsonObj.get("next");
+            href = (JsonPrimitive) nextJsonObj.get("href");
+            title = (JsonPrimitive) nextJsonObj.get("title");
+            nextDTOObj = new NextDTO(href.getAsString(), title.getAsString());
+
+        } else {
+            nextDTOObj = new NextDTO("", "");
+        }
+
 
         selfDTOObj = new SelfDTO("", "");
         linksDTOObj = new LinksDTO(nextDTOObj, selfDTOObj);

@@ -45,7 +45,7 @@ public class RecipeController {
 
     //Returns to the frontend a list of recipesDTO with the first 100 searches
     @SneakyThrows
-    @GetMapping(path = "/search")
+    @PostMapping(path = "/search")
     public final List<RecipeDTO> searchRecies(
             @RequestBody final Map<String, Object> payload
     ) {
@@ -55,15 +55,20 @@ public class RecipeController {
         RootRecipeDTO rootRecipeDTO = RecipeApiService.getRootRecipeDetailsObject(URLService.getApi(link));
         List<RecipeDTO> recipeDTOList = new ArrayList<>();
         for (HitDTO hitDTO : rootRecipeDTO.getHitDTOS()) {
+//            URL url = new URL(hitDTO.getRecipeDTO().getImage());
+//            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+//            huc.setInstanceFollowRedirects(false);
+//            int responseCode = huc.getResponseCode();
+//            if (HttpURLConnection.HTTP_OK == responseCode)
             recipeDTOList.add(hitDTO.getRecipeDTO());
         }
-
-        for (int i = 0; i < 4; i++) {
-            link = rootRecipeDTO.get_linksDTO().getNextDTO().getHref();
-            rootRecipeDTO = RecipeApiService.getRootRecipeDetailsObject(URLService.getApi(link));
-            for (HitDTO hitDTO : rootRecipeDTO.getHitDTOS())
-                recipeDTOList.add(hitDTO.getRecipeDTO());
-        }
+//
+//        for (int i = 0; i < 1 ; i++) {
+//            link = rootRecipeDTO.get_linksDTO().getNextDTO().getHref();
+//            rootRecipeDTO = RecipeApiService.getRootRecipeDetailsObject(URLService.getApi(link));
+//            for (HitDTO hitDTO : rootRecipeDTO.getHitDTOS())
+//                recipeDTOList.add(hitDTO.getRecipeDTO());
+//        }
         return recipeDTOList;
     }
 
